@@ -1,0 +1,41 @@
+.nodeLeft{
+    float: left;
+    margin-right: 15px;
+    width: 400px;
+    color: #a2a2a2;
+}
+.settingsContainer{
+    color: #a2a2a2;
+}
+.clusterStatus{
+    color: #a2a2a2;
+}
+.nodeContainer{
+    display:flex;
+    background-color: #171717;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+#leftBar{
+    background-color: #600000;
+    width: 5%;
+    height: 100%;
+    float:left;
+}
+#dashboard{
+    flex-grow: 1;
+    width: 95%;
+    background-color: #303030;
+}
+body{
+    height : 100%;
+    margin: 0;
+    display: flex;
+}
+.clusterStatus{
+    margin-left: 15px;
+}
+ul
+{
+    list-style-type: none;
+}

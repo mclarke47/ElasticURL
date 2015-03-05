@@ -9,8 +9,7 @@ var EsStatus = React.createClass({
             .done(function (data) {
                 console.log("done");
                 console.log(data);
-                var newState = esStatus.mapToState(data);
-                esStatus.setState(newState);
+                esStatus.setState(data);
             }).fail(function () {
                 console.log("fail");
             });
@@ -109,14 +108,14 @@ var EsCluster = React.createClass({
             });
         }
 
-
+//   <button type="button" onClick={this.refresh}>refresh</button>
         return (
             <div className="clusterStatus">
                 <h1>Cluster: {this.state.cluster_name}</h1>
                 <ul>
                     {nodes}
                 </ul>
-                <button type="button" onClick={this.refresh}>refresh</button>
+
             </div>
         );
     }
@@ -127,7 +126,11 @@ var Node = React.createClass({
     getInitialState: function () {
         return ({
             name: this.props.nodeData.name,
-            host: this.props.nodeData.host
+            host: this.props.nodeData.host,
+            version: this.props.nodeData.version,
+            transport_address: this.props.nodeData.transport_address,
+            http_address: this.props.nodeData.http_address,
+            settings: this.props.nodeData.settings
         });
     },
     render: function () {
@@ -136,12 +139,46 @@ var Node = React.createClass({
 
         return (
             <div className="nodeContainer">
-                <h2>Node: {this.state.name}</h2>
-                <h2>Host: {this.state.host}</h2>
+                <div className="nodeLeft">
+                    <h2>Node: {this.state.name}</h2>
+                    <h2>Host: {this.state.host}</h2>
+                    <h2>Transport Address: {this.state.transport_address}</h2>
+                    <h2>http_address: {this.state.http_address}</h2>
+                    <h4>version: {this.state.version}</h4>
+                </div>
+                <div className="nodeRight">
+                    <NodeSettings settingsData={this.state.settings}></NodeSettings>
+                </div>
             </div>
         );
     }
 });
 
+var NodeSettings = React.createClass({
+    getInitialState: function () {
+
+        return ({
+            name : this.props.settingsData.name,
+            path : this.props.settingsData.path,
+            allowOrigin: this.props.settingsData.http.cors['allow-origin'], //ouch
+            corsEnabled: this.props.settingsData.http.cors.enabled,
+            cluster : this.props.settingsData.cluster,
+            client : this.props.settingsData.client
+        });
+    }, render: function () {
+        return (
+        <div className="settingsContainer">
+            <h2>Node: {this.state.name}</h2>
+            <h2>logs: {this.state.path.logs}</h2>
+            <h2>home: {this.state.path.home}</h2>
+            <h2>cors.allow-origin: {this.state['allowOrigin']}</h2>
+            <h2>cors.enabled: {this.state.corsEnabled}</h2>
+            <h2>cluster: {this.state.cluster}</h2>
+            <h2>client: {this.state.client}</h2>
+        </div>
+        );
+    }
+});
+
 //React.renderComponent(<EsStatus/>, document.getElementById('mount'));
-React.renderComponent(<EsCluster/>, document.getElementById('drilldown-mount'));
+React.renderComponent(<EsCluster/>, document.getElementById('mount'));
